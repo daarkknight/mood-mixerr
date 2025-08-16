@@ -2,41 +2,65 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* Mood Mixer Design System - All colors MUST be HSL */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Base colors */
+    --background: 250 25% 8%;
+    --foreground: 0 0% 98%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 250 20% 12%;
+    --card-foreground: 0 0% 95%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 250 20% 12%;
+    --popover-foreground: 0 0% 95%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 280 100% 70%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 250 15% 20%;
+    --secondary-foreground: 0 0% 90%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 250 15% 18%;
+    --muted-foreground: 0 0% 65%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 320 100% 75%;
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 250 15% 20%;
+    --input: 250 15% 20%;
+    --ring: 280 100% 70%;
 
-    --radius: 0.5rem;
+    --radius: 1rem;
+
+    /* Mood-specific colors */
+    --mood-happy: 45 100% 65%;
+    --mood-calm: 200 100% 70%;
+    --mood-energetic: 0 100% 65%;
+    --mood-focused: 120 60% 55%;
+    --mood-relaxed: 280 80% 75%;
+    --mood-creative: 30 100% 60%;
+
+    /* Gradients */
+    --gradient-happy: linear-gradient(135deg, hsl(45 100% 65%), hsl(60 100% 70%));
+    --gradient-calm: linear-gradient(135deg, hsl(200 100% 70%), hsl(220 100% 75%));
+    --gradient-energetic: linear-gradient(135deg, hsl(0 100% 65%), hsl(320 100% 70%));
+    --gradient-focused: linear-gradient(135deg, hsl(120 60% 55%), hsl(150 70% 60%));
+    --gradient-relaxed: linear-gradient(135deg, hsl(280 80% 75%), hsl(260 90% 80%));
+    --gradient-creative: linear-gradient(135deg, hsl(30 100% 60%), hsl(45 100% 65%));
+    --gradient-primary: linear-gradient(135deg, hsl(280 100% 70%), hsl(320 100% 75%));
+
+    /* Shadows with mood colors */
+    --shadow-mood: 0 20px 40px -10px;
+    --shadow-glow: 0 0 60px;
+
+    /* Animation variables */
+    --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
     --sidebar-background: 0 0% 98%;
 
@@ -100,6 +124,88 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground overflow-x-hidden;
   }
+}
+
+@layer components {
+  /* Mood-based backgrounds */
+  .mood-bg-happy {
+    background: var(--gradient-happy);
+  }
+  
+  .mood-bg-calm {
+    background: var(--gradient-calm);
+  }
+  
+  .mood-bg-energetic {
+    background: var(--gradient-energetic);
+  }
+  
+  .mood-bg-focused {
+    background: var(--gradient-focused);
+  }
+  
+  .mood-bg-relaxed {
+    background: var(--gradient-relaxed);
+  }
+  
+  .mood-bg-creative {
+    background: var(--gradient-creative);
+  }
+
+  /* Animated background effects */
+  .mood-bg-animated {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .mood-bg-animated::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+    animation: mood-shimmer 3s ease-in-out infinite;
+  }
+
+  /* Mood card styles */
+  .mood-card {
+    transition: var(--transition-smooth);
+    border-radius: var(--radius);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .mood-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: var(--shadow-mood) rgba(0, 0, 0, 0.3);
+  }
+
+  /* Floating elements animation */
+  .floating {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .floating:nth-child(2) {
+    animation-delay: -2s;
+  }
+
+  .floating:nth-child(3) {
+    animation-delay: -4s;
+  }
+}
+
+@keyframes mood-shimmer {
+  0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+  50% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+  100% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33% { transform: translateY(-20px) rotate(1deg); }
+  66% { transform: translateY(-10px) rotate(-1deg); }
 }
